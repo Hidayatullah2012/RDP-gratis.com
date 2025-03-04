@@ -16,9 +16,7 @@ jobs:
         Enable-PSRemoting -Force  
         Set-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp" -Name "UserAuthentication" -Value 0  
         netsh advfirewall firewall set rule group="Remote Desktop" new enable=yes  
-    - name: Setup Ngrok  
-      run: |  
-        Invoke-WebRequest -Uri "https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-amd64.zip" -OutFile "ngrok.zip"  
-        Expand-Archive ngrok.zip  
-        .\ngrok\ngrok.exe authtoken ${{ secrets.NGROK_AUTH_TOKEN }}  
-        Start-Process -NoNewWindow -FilePath ".\ngrok\ngrok.exe" -ArgumentList "tcp 3389"
+    - name: Setup Ngrok
+      run: |
+    .\ngrok\ngrok.exe authtoken 2tq9MToGcGB6BFgIYaJL3CruFpA_74nqdk6x1wR7C66GeRBTw
+    Start-Process -NoNewWindow -FilePath ".\ngrok\ngrok.exe" -ArgumentList "tcp 3389"
