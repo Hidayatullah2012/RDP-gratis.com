@@ -1,0 +1,23 @@
+name: Free RDP by GitHub Actions  
+
+on:  
+  workflow_dispatch  
+
+jobs:  
+  build:  
+    runs-on: windows-latest  
+
+    steps:  
+    - name: Enable RDP Access  
+      run: |  
+        net user github Password123 /add  
+        net localgroup administrators github /add  
+        reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server" /v fDenyTSConnections /t REG_DWORD /d 0 /f  
+        Enable-PSRemoting -Force  
+        Set-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp" -Name "UserAuthentication" -Value 0  
+        netsh advfirewall firewall set rule group="Remote Desktop" new enable=yes  
+    - name: Setup Ngrok
+      run: |
+        start-process -NoNewWindow -FilePath
+        ".\ngrok\ngrok.exe authtoken 2tq9MToGcGB6BFgIYaJL3CruFpA_74nqdk6x1wR7C66GeRBTw
+        Start-Process -NoNewWindow -FilePath ".\ngrok\ngrok.exe" -ArgumentList "tcp 3389"
